@@ -13,15 +13,29 @@ class UtilController {
         Song song = Song.get(2)
         render song
     }
+    def list = {
+        List<Song> songs = Song.list()
+        render songs
+        render "<br>"
+        songs = Song.list([offset: 1, max: 5])
+        render songs
+        render "<br>"
+        songs = Song.list(sort: 'dateCreated', order: 'desc')
+        render songs
+        render "<br>"
+        songs = Song.list([offset: 2, max: 5, sort: 'dateCreated', order: 'desc'])
+        render songs
+        render "<br>"
+    }
     def getAll = {
-        List<Song> songList = Song.getAll()
-        render songList
+        List<Song> songs = Song.getAll()
+        render songs
         render "<br>"
-        List<Song> songList1 = Song.getAll([1, 3, 5])
-        render songList1
+        songs = Song.getAll([1, 3, 5])
+        render songs
         render "<br>"
-        List<Song> songList2 = Song.getAll(1..4)
-        render songList2
+        songs = Song.getAll(1..4)
+        render songs
         render "<br>"
     }
     def find = {
@@ -54,17 +68,17 @@ class UtilController {
         render "<br>"
     }
     def findAll = {
-        List<Song> songList = Song.findAll("from Song where title='Hey sohna' or  album=:albums", [albums: Album.get(1)])
-        render songList
+        List<Song> songs = Song.findAll("from Song where title='Hey sohna' or  album in(:albums)", [albums: Album.list([offset:1,max:10])])
+        render songs
         render "<br>"
-        songList = Song.findAllWhere(title: 'Aadat')
-        render songList
+        songs = Song.findAllWhere(title: 'Aadat')
+        render songs
         render "<br>"
-        songList = Song.findAllByIdAndAlbum(1, Album.get(1))
-        render songList
+        songs = Song.findAllByIdAndAlbum(1, Album.get(1))
+        render songs
         render "<br>"
-        songList = Song.findAllByTitleLike('%aa%')
-        render songList
+        songs = Song.findAllByTitleLike('%aa%',[offset:1,max:10])
+        render songs
         render "<br>"
     }
     def countBy = {
@@ -82,11 +96,14 @@ class UtilController {
         render isValidated1
     }
     def pagination = {
-        List<Song> songList=Song.list()
-        render songList
+        List<Song> songs = Song.list()
+        render songs
         render "<br>"
-        songList=Song.list([offset:2,max:5])
-        render songList
+        songs = Song.list([offset: 2, max: 5])
+        render songs
+        render "<br>"
+        songs = Song.findAllByTitleLike('%aa%',[offset:0,max:10])
+        render songs
         render "<br>"
 
     }
